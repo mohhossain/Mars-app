@@ -4,42 +4,36 @@ import Curiosity from './Curiosity';
 import Perseverance from './Perseverance';
 import {useState, useEffect} from 'react'
 import LatestImage from './LatestImage';
+import NewImageForm from './NewImageForm';
 
 function App() {
   const rovers = ['Curiosity', 'Perseverance']
   const rover_image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Mars_2020_Rover_-_Artist%27s_Concept.png/1200px-Mars_2020_Rover_-_Artist%27s_Concept.png'
-
-  const [clickCount, setClickCount] = useState(0)
   const [latestImages, setLatestImages] = useState([])
+
+  const [loading, setLoading] = useState(false)
   // clickCount = 0
   // setClickCount(100)
+  const api_key = '1vqM375yXHsdDE70mKqxWcgrOJMjK3BavOpJm4Es'
+  const [rover, setRover] = useState("curiosity")
 
-
-  const handleCuriousityClick = () => {
-    console.log('Curiosity was clicked')
-    setClickCount(clickCount + 1)
-
-    console.log(clickCount)
-
-  }  
-
-  const handlePerseveranceClick = () => {
-    console.log('Perseverance was clicked')
-    setClickCount(clickCount + 1)
-
-    console.log(clickCount)
+  const onRoverChange = (rover) => {
+    setRover(rover)
   }
+  console.log(rover)
 
 
   useEffect(()=>{
+    setLoading(true)
     console.log('it is fetching!!')
-    fetch('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos?sol=1000&api_key=1vqM375yXHsdDE70mKqxWcgrOJMjK3BavOpJm4Es')
+    fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/latest_photos?sol=1000&api_key=${api_key}`)
     .then(res => res.json())
     .then(data => {
       console.log(data)
       setLatestImages(data.latest_photos)
+      setLoading(false)
   })
-  }, [])
+  }, [rover])
 
   // [] => only load once when the app loads
 
@@ -49,29 +43,20 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Mars App</h1>
 
-      <p>{clickCount}</p>
       <div className='rover-container'>
-
-        <div style={{cursor: 'pointer'}} onClick={handleCuriousityClick}>
-          <Curiosity  roverImage={rover_image} rovers={rovers}></Curiosity>
-        </div>
-
-        <div style={{cursor: 'pointer'}} onClick={handlePerseveranceClick}>
-          <Perseverance roverImage={rover_image} rovers={rovers}></Perseverance>
-
-        </div>
-
-        
-
+        <Curiosity onRoverChange={onRoverChange} roverImage={rover_image} rovers={rovers}></Curiosity>
+        <Perseverance onRoverChange={onRoverChange} roverImage={rover_image} rovers={rovers}></Perseverance>
       </div>
+      <NewImageForm></NewImageForm>
 
       <div className='image-container'>
-
-        {latestImages.map( image => {
-          return <LatestImage key={image.id} image={image.img_src}/>;
-        })}
+      {loading? <h1>Loading....</h1> : 
+       latestImages.map( image => {
+        return <LatestImage key={image.id} image={image.img_src}/>;
+      })}
+      
+       
         
       </div>
       
