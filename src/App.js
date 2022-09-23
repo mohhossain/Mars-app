@@ -6,6 +6,8 @@ import {useState, useEffect} from 'react'
 import LatestImage from './LatestImage';
 import NewImageForm from './NewImageForm';
 
+
+
 function App() {
   const rovers = ['Curiosity', 'Perseverance']
   const rover_image = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Mars_2020_Rover_-_Artist%27s_Concept.png/1200px-Mars_2020_Rover_-_Artist%27s_Concept.png'
@@ -22,11 +24,12 @@ function App() {
   }
   console.log(rover)
 
+  console.log(process.env)
 
   useEffect(()=>{
     setLoading(true)
     console.log('it is fetching!!')
-    fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/latest_photos?sol=1000&api_key=${api_key}`)
+  fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover}/latest_photos?sol=1000&api_key=${process.env.REACT_APP_API_KEY}`)
     .then(res => res.json())
     .then(data => {
       console.log(data)

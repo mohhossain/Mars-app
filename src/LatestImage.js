@@ -3,7 +3,7 @@ import React from 'react'
 function LatestImage({image}) {
   return (
     <div>
-        <img height="250px" width="auto" style={{margin: '20px'}} src={image}></img>
+        <img height="250px" width="auto" style={{margin: '2px'}} src={image}></img>
     </div>
   )
 }
