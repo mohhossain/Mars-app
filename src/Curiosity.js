@@ -1,21 +1,16 @@
-import React from 'react'
+import React from "react";
 
-
-function Curiousity({roverImage, rovers, onRoverChange}) {
-
+function Curiousity({ roverImage, rovers, onRoverChange }) {
   const handleClick = () => {
+    onRoverChange("curiosity");
+  };
 
-    onRoverChange('curiosity')
-
-  }
- 
-
-    console.log(rovers)
+  console.log(rovers);
   return (
-    <div style={{cursor: 'pointer'}} onClick={(handleClick)}>
-        <img height="250px" className='rover' src={roverImage}/>
+    <div style={{ cursor: "pointer" }} onClick={handleClick}>
+      <img height="250px" className="rover" src={roverImage} />
     </div>
-  )
+  );
 }
 
-export default Curiousity
+export default Curiousity;
